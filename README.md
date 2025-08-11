@@ -54,12 +54,11 @@ rag_multimodal_MPG/
    ```
 
 2. **Set up environment**:
-   - Copy `env_template.txt` to `.env`
    - Add your OpenAI API key to the `.env` file
 
 3. **Upload PDFs**:
    - Use the file uploader in the left sidebar
-   - Click "🔄 Process PDF" to extract and index the content
+   - Click " Process PDF" to extract and index the content
    - The system will process text, images, and tables automatically
 
 4. **Ask questions**:
@@ -84,8 +83,8 @@ rag_multimodal_MPG/
 - Maintains detailed metadata for citations
 
 ### 2. Embedding Generation (`embeddings.py`)
-- Text embeddings using OpenAI's text-embedding-ada-002
-- Image descriptions using GPT-4 Vision
+- Text embeddings using OpenAI's text-embedding-3-small
+- Image descriptions using GPT-o4-mini
 - Table embeddings with enhanced context
 - Unified embedding approach for all content types
 
@@ -143,9 +142,9 @@ Every answer includes:
 - `alpha`: Weight for dense vs keyword search (default: 0.7)
 
 ### Model Configuration
-- Text embeddings: `text-embedding-ada-002`
-- Image understanding: `gpt-4o` (updated from deprecated `gpt-4-vision-preview`)
-- Text generation: `gpt-3.5-turbo`
+- Text embeddings: `text-embedding-3-small`
+- Image understanding: `gpt-o4-mini` (updated from deprecated `gpt-4-vision-preview`)
+- Text generation: `gpt-o4-mini`
 
 ## File Structure
 
