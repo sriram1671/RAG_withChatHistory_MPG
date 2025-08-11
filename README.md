@@ -33,6 +33,7 @@ rag_withChatHistory_MPG/
 │   └── retrievals.py     # Hybrid search and retrieval logic
 ├── app.py                # Main Streamlit application
 ├── requirements.txt      # Python dependencies
+├── RAG_Document.pdf      # Documentation
 └── README.md            # This file
 ```
 
@@ -41,7 +42,7 @@ rag_withChatHistory_MPG/
 1. **Clone the repository**:
    ```bash
    git clone <repository-url>
-   cd rag_multimodal_MPG
+   cd RAG_withChatHistory_MPG-main
    ```
 
 2. **Install dependencies**:
