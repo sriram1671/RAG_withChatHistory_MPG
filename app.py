@@ -15,7 +15,7 @@ load_dotenv()
 # Page configuration with dark theme
 st.set_page_config(
     page_title="PDF RAG System",
-    page_icon="assets/mpg_icon.png",
+    page_icon="assets/logo.png",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -267,8 +267,7 @@ def main():
     
     # Sidebar for file upload and chat history
     with st.sidebar:
-        # Add logo at the top of sidebar
-        st.image("assets/image.png", width=200)
+
         st.markdown("---")
         
         st.header("📁 Upload PDFs")
