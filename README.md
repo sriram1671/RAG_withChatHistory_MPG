@@ -11,7 +11,7 @@ A comprehensive Retrieval-Augmented Generation (RAG) system for PDF documents th
 - **FAISS Vector Store**: Fast and efficient similarity search using FAISS
 - **OpenAI Integration**: Uses OpenAI's Vision model for image understanding and GPT for text generation
 
-### Evaluations: 8 of 10 manual test cases performed successfully.
+### Evaluations: 8 out of 10 manual test cases, performed successfully.
 
 ## Demo Link: 
 
