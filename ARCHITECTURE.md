@@ -276,7 +276,8 @@ rag_multimodal_MPG/
 ├── requirements.txt           # Python dependencies
 ├── .env                      # Environment variables (API keys)
 ├── assets/
-│   └── image.png             # Application logo
+|   ├──mpg_icon.png           # MPG icon 
+│   └── image.png             # MPG logo
 ├── processing/
 │   ├── __init__.py           # Package initialization
 │   ├── chunkings.py          # PDF content extraction
