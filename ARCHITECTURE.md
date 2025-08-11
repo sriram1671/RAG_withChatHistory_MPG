@@ -7,19 +7,19 @@ This is a **Retrieval-Augmented Generation (RAG)** system designed to process PD
 ## System Architecture
 
 ```
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Streamlit UI  │    │  PDF Processing │    │  Vector Store   │
+┌─────────────────┐    ┌─────────────────┐    ┌──────────────────┐
+│   Streamlit UI  │    │  PDF Processing │    │  Vector Store    │
 │   (app.py)      │◄──►│  (chunkings.py) │◄──►│  (vectorstore.py)│
-└─────────────────┘    └─────────────────┘    └─────────────────┘
+└─────────────────┘    └─────────────────┘    └──────────────────┘
          │                       │                       │
-         │              ┌─────────────────┐              │
-         │              │ Multi-Modal     │              │
-         │              │ Content Split   │              │
-         │              │ ┌─────┬─────┬───┐              │
-         │              │ │Text │Image│Tab│              │
-         │              │ │     │     │le │              │
-         │              │ └─────┴─────┴───┘              │
-         │              └─────────────────┘              │
+         │              ┌───────────────────┐            │
+         │              │ Multi-Modal       │            │
+         │              │ Content Split     │            │
+         │              │ ┌─────┬─────┬───┐ |            │
+         │              │ │Text │Image│Tab│ |            │
+         │              │ │     │     │le │ |            │
+         │              │ └─────┴─────┴───┘ |            │
+         │              └───────────────────┘            │
          │                       │                       │
          │                       ▼                       │
          │              ┌─────────────────┐              │
@@ -285,8 +285,7 @@ rag_multimodal_MPG/
 │   └── retrievals.py         # Search and generation logic
 ├── vector_store/             # Persistent vector database
 ├── README.md                 # User documentation
-├── ARCHITECTURE.md           # This architecture document
-└── .gitignore               # Git ignore rules
+└── ARCHITECTURE.md           # This architecture document
 ```
 
 ## Configuration
