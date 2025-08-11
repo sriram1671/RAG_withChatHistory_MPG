@@ -6,7 +6,7 @@ from typing import List, Dict, Any, Tuple
 import json
 
 class FAISSVectorStore:
-    def __init__(self, dimension: int = 1536):  # OpenAI ada-002 embedding dimension
+    def __init__(self, dimension: int = 1536):  # OpenAI text-embedding-3-small embedding dimension
         self.dimension = dimension
         self.text_index = None
         self.image_index = None

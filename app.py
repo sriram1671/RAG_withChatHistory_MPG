@@ -96,19 +96,30 @@ def initialize_system():
     openai_api_key = os.getenv('OPENAI_API_KEY')
     
     if not openai_api_key:
-        st.error("OpenAI API key not found in .env file. Please add OPENAI_API_KEY=your_key_here to .env file.")
+        st.error("🚨 **OpenAI API Key Missing!**")
+        st.error("Please add your OpenAI API key to the `.env` file:")
+        st.code("OPENAI_API_KEY=your_api_key_here")
+        st.error("Without a valid API key, the system cannot process PDFs or answer questions.")
         return False
     
     try:
         # Initialize vector store
         vector_store = FAISSVectorStore()
         
-        # Try to load existing data
-        if os.path.exists("vector_store"):
-            vector_store.load("vector_store")
-            st.success("✅ Loaded existing knowledge base")
+        # Try to load existing data only if directory exists and has content
+        if os.path.exists("vector_store") and os.listdir("vector_store"):
+            try:
+                vector_store.load("vector_store")
+                stats = vector_store.get_stats()
+                if stats['total_items'] > 0:
+                    st.success("✅ Loaded existing knowledge base")
+                else:
+                    st.info("📝 No content in existing knowledge base. Upload PDFs to get started.")
+            except Exception as e:
+                st.warning("⚠️ Could not load existing knowledge base. Starting fresh.")
+                vector_store = FAISSVectorStore()  # Fresh instance
         else:
-            st.info(" No existing knowledge base found. Upload PDFs to get started.")
+            st.info("📝 No existing knowledge base found. Upload PDFs to get started.")
         
         # Initialize retrieval manager
         retrieval_manager = RetrievalManager(openai_api_key, vector_store)
@@ -120,7 +131,7 @@ def initialize_system():
         
         return True
     except Exception as e:
-        st.error(f"Error initializing system: {e}")
+        st.error(f"🚨 Error initializing system: {e}")
         return False
 
 def process_pdf(uploaded_file):
@@ -242,7 +253,13 @@ def display_citation_info(citation_text):
 def main():
     # Initialize system on first load
     if not st.session_state.system_initialized:
-        initialize_system()
+        if not initialize_system():
+            # If initialization failed (e.g., no API key), show error and stop
+            st.title("📚 PDF RAG System")
+            st.markdown("Upload your PDFs and ask questions with AI-powered retrieval and citations.")
+            st.error("🚨 **System cannot start without a valid OpenAI API key.**")
+            st.error("Please fix the API key issue and refresh the page.")
+            return
     
     # Main layout
     st.title("📚 PDF RAG System")
@@ -262,10 +279,12 @@ def main():
         )
         
         if uploaded_file:
-            # Check if file already exists
-            if uploaded_file.name in st.session_state.uploaded_files:
-                st.warning(f"⚠️ {uploaded_file.name} is already in the knowledge base!")
-                st.info("Uploading again will add duplicate content. Use 'Clear All Data' to start fresh.")
+            # Check if file already exists and knowledge base has content
+            if uploaded_file.name in st.session_state.uploaded_files and st.session_state.vector_store:
+                stats = st.session_state.vector_store.get_stats()
+                if stats['total_items'] > 0:
+                    st.warning(f"⚠️ {uploaded_file.name} is already in the knowledge base!")
+                    st.info("Uploading again will add duplicate content. Use 'Clear All Data' to start fresh.")
             
             if st.button("🔄 Process PDF"):
                 if process_pdf(uploaded_file):
@@ -305,9 +324,16 @@ def main():
             with col1:
                 if st.button("🗑️ Clear All Data", key="clear_vector_store"):
                     if st.session_state.vector_store:
+                        # Clear vector store
                         st.session_state.vector_store.clear_all()
                         st.session_state.uploaded_files = []
-                        st.success("✅ Knowledge base cleared!")
+                        
+                        # Remove vector store directory from disk
+                        import shutil
+                        if os.path.exists("vector_store"):
+                            shutil.rmtree("vector_store")
+                        
+                        st.success("✅ Knowledge base completely cleared!")
                         st.rerun()
             with col2:
                 if st.button("🔄 Reset System", key="reset_system"):

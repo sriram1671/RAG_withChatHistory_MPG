@@ -8,12 +8,14 @@ import numpy as np
 class EmbeddingManager:
     def __init__(self, openai_api_key: str):
         self.client = openai.OpenAI(api_key=openai_api_key)
+        self.embedding_model = "text-embedding-3-small"  
+        self.vision_model = "gpt-4o-mini"               # Previously gpt-4o
         
     def get_text_embedding(self, text: str) -> List[float]:
-        """Get embedding for text using OpenAI text-embedding-ada-002."""
+        """Get embedding for text using OpenAI text-embedding-3-small (5x cheaper, better quality)."""
         try:
             response = self.client.embeddings.create(
-                model="text-embedding-ada-002",
+                model=self.embedding_model,  # text-embedding-3-small  of ada-002
                 input=text
             )
             return response.data[0].embedding
@@ -22,13 +24,13 @@ class EmbeddingManager:
             return []
     
     def get_image_description(self, image_data: bytes) -> str:
-        """Get description of image using OpenAI Vision model."""
+        """Get description of image using OpenAI Vision model (gpt-4o-mini for cost optimization)."""
         try:
             # Convert bytes to base64
             image_base64 = base64.b64encode(image_data).decode('utf-8')
             
             response = self.client.chat.completions.create(
-                model="gpt-4o",
+                model=self.vision_model,  
                 messages=[
                     {
                         "role": "user",
@@ -62,7 +64,7 @@ class EmbeddingManager:
             image_base64 = base64.b64encode(image_data).decode('utf-8')
             
             response = self.client.embeddings.create(
-                model="text-embedding-ada-002",
+                model=self.embedding_model,  # text-embedding-3-small instead of ada-002
                 input=image_base64,
                 encoding_format="base64"
             )
@@ -101,10 +103,10 @@ class EmbeddingManager:
         print("Processing images...")
         for image in chunks['images']:
             # Get image description first
-            description = self.get_image_description(image['content'])
+            description = self.get_image_description(image['image_data'])
             image['description'] = description
             
-            # Get embedding for the description
+            # Then get embedding for the description
             embedding = self.get_text_embedding(description)
             if embedding:
                 image['embedding'] = embedding
@@ -118,7 +120,12 @@ class EmbeddingManager:
                 table['embedding'] = embedding
                 processed_chunks['tables'].append(table)
         
-        print(f"Processed {len(processed_chunks['text_chunks'])} text chunks, "
-              f"{len(processed_chunks['images'])} images, {len(processed_chunks['tables'])} tables")
-        
-        return processed_chunks 
+        return processed_chunks
+    
+    def get_embeddings(self, texts: List[str]) -> List[List[float]]:
+        """Get embeddings for a list of texts."""
+        embeddings = []
+        for text in texts:
+            embedding = self.get_text_embedding(text)
+            embeddings.append(embedding)
+        return embeddings 
