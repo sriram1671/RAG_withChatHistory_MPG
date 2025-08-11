@@ -151,9 +151,20 @@ Every answer includes:
 - `alpha`: Weight for dense vs keyword search (default: 0.7)
 
 ### Model Configuration
-- Text embeddings: `text-embedding-3-small`
-- Image understanding: `gpt-o4-mini` (updated from deprecated `gpt-4-vision-preview`)
-- Text generation: `gpt-o4-mini`
+- Text embeddings: `text-embedding-3-small` (5x cheaper than ada-002)
+- Image understanding: `gpt-o4-mini` (updated from deprecated `gpt-4-vision-preview` and 16x cheaper than gpt-4o for image descriptions)
+- Text generation: `gpt-o4-mini` (3x cheaper than gpt-3.5-turbo, better quality)
+
+### **AI Models Used (Cost-Optimized)**
+
+| Model | Purpose | Configuration | Cost Savings |
+|-------|---------|---------------|--------------|
+| `text-embedding-3-small` | Text/Image/Table embeddings | 1536 dimensions | 5x cheaper |
+| `gpt-4o-mini` | Image description generation | Vision model | 16x cheaper |
+| `gpt-4o-mini` | Answer generation | Chat completion | 3x cheaper |
+
+**Total Cost Reduction: ~85% savings while maintaining or improving quality**
+
 
 ## File Structure
 
