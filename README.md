@@ -11,12 +11,20 @@ A comprehensive Retrieval-Augmented Generation (RAG) system for PDF documents th
 - **FAISS Vector Store**: Fast and efficient similarity search using FAISS
 - **OpenAI Integration**: Uses OpenAI's Vision model for image understanding and GPT for text generation
 
+### Evaluations: 8 of 10 manual test cases performed successfully.
+
+## Demo Link: 
+
+
+https://github.com/user-attachments/assets/76946046-27c9-4963-9a52-f6bc754d0309
+
+
 ## Architecture
 
 The system is organized into modular components:
 
 ```
-rag_multimodal_MPG/
+rag_withChatHistory_MPG/
 ├── processing/
 │   ├── __init__.py
 │   ├── chunkings.py      # PDF chunking and extraction logic
